@@ -144,7 +144,7 @@ button {
   color: var(--muted);
 }
 
-.todo-item .delete {
+.todo-item .action {
   background: none;
   border: none;
   color: var(--muted);
@@ -153,13 +153,28 @@ button {
   transition: opacity 0.15s;
 }
 
-.todo-item:hover .delete,
-.todo-item .delete:focus { opacity: 1; }
+.todo-item:hover .action,
+.todo-item .action:focus { opacity: 1; }
+.todo-item .edit:hover { color: var(--accent); }
 .todo-item .delete:hover { color: var(--danger); }
 
 @media (hover: none) {
-  .todo-item .delete { opacity: 1; }
+  .todo-item .action { opacity: 1; }
 }
+
+.todo-item .edit-input {
+  flex: 1;
+  min-width: 0;
+  padding: 4px 8px;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+
+.todo-item .edit-input:focus { outline: none; }
+.todo-item.editing .action { display: none; }
 
 .empty {
   text-align: center;
