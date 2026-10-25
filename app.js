@@ -57,13 +57,19 @@ function render() {
     text.className = "text";
     text.textContent = todo.text;
 
+    const edit = document.createElement("button");
+    edit.type = "button";
+    edit.className = "action edit";
+    edit.textContent = "✎";
+    edit.setAttribute("aria-label", "Görevi düzenle");
+
     const del = document.createElement("button");
     del.type = "button";
-    del.className = "delete";
+    del.className = "action delete";
     del.textContent = "✕";
     del.setAttribute("aria-label", "Görevi sil");
 
-    li.append(checkbox, text, del);
+    li.append(checkbox, text, edit, del);
     list.appendChild(li);
   }
 
@@ -86,7 +92,10 @@ list.addEventListener("click", (e) => {
   if (!item) return;
   const id = item.dataset.id;
 
-  if (e.target.matches(".delete")) {
+  if (e.target.matches(".edit")) {
+    startEdit(item);
+    return;
+  } else if (e.target.matches(".delete")) {
     todos = todos.filter((t) => t.id !== id);
   } else if (e.target.matches("input[type='checkbox']")) {
     const todo = todos.find((t) => t.id === id);
@@ -97,6 +106,48 @@ list.addEventListener("click", (e) => {
   save();
   render();
 });
+
+list.addEventListener("dblclick", (e) => {
+  if (!e.target.matches(".text")) return;
+  startEdit(e.target.closest(".todo-item"));
+});
+
+function startEdit(item) {
+  const todo = todos.find((t) => t.id === item.dataset.id);
+  const text = item.querySelector(".text");
+  if (!todo || !text) return;
+
+  const field = document.createElement("input");
+  field.type = "text";
+  field.className = "edit-input";
+  field.value = todo.text;
+  field.maxLength = 200;
+  field.setAttribute("aria-label", "Görev metni");
+
+  item.classList.add("editing");
+  text.replaceWith(field);
+  field.focus();
+  field.select();
+
+  let finished = false;
+  const finish = (commit) => {
+    if (finished) return;
+    finished = true;
+    const value = field.value.trim();
+    // Boş metin kaydedilmez; görev eski hâline döner.
+    if (commit && value && value !== todo.text) {
+      todo.text = value;
+      save();
+    }
+    render();
+  };
+
+  field.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") finish(true);
+    else if (e.key === "Escape") finish(false);
+  });
+  field.addEventListener("blur", () => finish(true));
+}
 
 clearDone.addEventListener("click", () => {
   todos = todos.filter((t) => !t.done);

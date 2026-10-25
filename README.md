@@ -5,6 +5,7 @@ Saf HTML, CSS ve JavaScript ile yazılmış basit bir görev listesi (to-do) web
 ## Özellikler
 
 - Görev ekleme, tamamlandı olarak işaretleme ve silme
+- Görev düzenleme (✎ butonu veya metne çift tıklama; Enter kaydeder, Esc iptal eder)
 - Tümü / Aktif / Tamamlanan filtreleri
 - Tamamlanan görevleri tek tıkla temizleme
 - Görevler tarayıcıda (`localStorage`) saklanır
