@@ -57,6 +57,9 @@ button {
   cursor: pointer;
 }
 
+/* Çift dokunmada sayfanın yakınlaşmasını engeller. */
+.todo-list { touch-action: manipulation; }
+
 .icon-btn {
   background: none;
   border: 1px solid var(--border);
@@ -159,7 +162,11 @@ button {
 .todo-item .delete:hover { color: var(--danger); }
 
 @media (hover: none) {
-  .todo-item .action { opacity: 1; }
+  .todo-item .action {
+    opacity: 1;
+    min-width: 40px;
+    min-height: 40px;
+  }
 }
 
 .todo-item .edit-input {
